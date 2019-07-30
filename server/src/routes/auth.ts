@@ -10,6 +10,21 @@ router.get(
   authenticate("twitch", { failureRedirect: "/" }),
   (req, res) => {
     // Successful authentication, redirect home.
-    res.redirect("/");
+    if (req.user) {
+      res.json({
+        success: true,
+        message: "user has successfully authenticated",
+        user: req.user,
+        cookies: req.cookies
+      });
+    }
+    res.json({});
+    // res.redirect("/");
   }
 );
+
+router.get("/auth/logout", (req, res) => {
+  req.logout();
+  res.end();
+  // res.redirect("/");
+});

@@ -9,7 +9,7 @@ use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "http://127.0.0.1:3000/auth/twitch/callback",
+      callbackURL: "http://localhost:3000/auth/twitch/callback",
       scope: "user_read"
     },
     async (accessToken, refreshToken, profile, done) => {
