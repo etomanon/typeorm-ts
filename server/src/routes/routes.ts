@@ -1,3 +1,3 @@
-import {router} from './user';
+import { router } from "./user";
 
 export const routes = [router];
