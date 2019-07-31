@@ -1,3 +1,4 @@
-import { router } from "./user";
+import { router as routerUser } from "./user";
+import { router as routerAuth } from "./auth";
 
-export const routes = [router];
+export const routes = [routerUser, routerAuth];

@@ -1,13 +1,16 @@
-import * as express from "express";
-import * as bodyParser from "body-parser";
+import { join } from "path";
+import { config } from "dotenv";
+import express from "express";
+import bodyParser from "body-parser";
 import { createConnection } from "typeorm";
-import * as ExpressSession from "express-session";
+import ExpressSession from "express-session";
 import { TypeormStore } from "connect-typeorm";
+import passport from "passport";
 
 import { routes } from "./routes/routes";
 import { Session } from "./entities/Session";
 import "./passport/passport";
-require("dotenv").config();
+config();
 
 // create typeorm connection
 createConnection().then(async connection => {
@@ -28,10 +31,16 @@ createConnection().then(async connection => {
       secret: process.env.SESSION_SECRET
     })
   );
-
+  app.use(passport.initialize());
+  app.use(passport.session());
   // register routes
   app.use("/api", ...routes);
+  // serve react build
+  app.use(express.static(join(__dirname, "/../../client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(join(__dirname, "/../../client/build/index.html"));
+  });
 
   // start express server
-  app.listen(3000);
+  app.listen(3001);
 });

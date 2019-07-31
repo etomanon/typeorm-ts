@@ -9,16 +9,27 @@ use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/auth/twitch/callback",
-      scope: "user_read"
+      callbackURL: "http://localhost:3001/api/auth/twitch/callback",
+      scope: "channel:read:subscriptions"
     },
     async (accessToken, refreshToken, profile, done) => {
-      const userEntity = await getRepository(User);
-      let user = await userEntity.findOne({ twitchId: profile.id });
-      if (!user) {
-        user = await userEntity.create({ twitchId: profile.id });
+      try {
+        const userRepository = await getRepository(User);
+        let user = await userRepository.findOne({ twitchId: profile.id });
+        if (!user) {
+          user = await userRepository.create({
+            twitchId: profile.id,
+            name: profile.login
+          });
+        }
+        user.accessToken = accessToken;
+        user.refreshToken = refreshToken;
+        await userRepository.save(user);
+        return done(undefined, user);
+      } catch (e) {
+        console.log("ERROR", e);
+        return done(undefined, undefined);
       }
-      return done(undefined, user);
     }
   )
 );

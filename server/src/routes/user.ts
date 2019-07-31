@@ -1,10 +1,13 @@
 import { Router } from "express";
+import { logged } from "../passport/logged";
 
 import * as user from "../controllers/user";
 
 export const router = Router();
 
 router.get("/user", user.userGetAll);
+
+router.get("/user/sub", logged, user.userGetSubs);
 
 router.get("/user/:id", user.userGetId);
 

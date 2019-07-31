@@ -7,4 +7,13 @@ export class User {
 
   @Column()
   twitchId: string;
+
+  @Column()
+  name: string;
+
+  @Column()
+  accessToken: string;
+
+  @Column()
+  refreshToken: string;
 }

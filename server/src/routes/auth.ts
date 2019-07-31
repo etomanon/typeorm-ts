@@ -9,22 +9,15 @@ router.get(
   "/auth/twitch/callback",
   authenticate("twitch", { failureRedirect: "/" }),
   (req, res) => {
-    // Successful authentication, redirect home.
+    // Successful authentication
     if (req.user) {
-      res.json({
-        success: true,
-        message: "user has successfully authenticated",
-        user: req.user,
-        cookies: req.cookies
-      });
+      return res.redirect("/?logged=true");
     }
-    res.json({});
-    // res.redirect("/");
+    res.redirect("/auth/twitch");
   }
 );
 
 router.get("/auth/logout", (req, res) => {
   req.logout();
-  res.end();
-  // res.redirect("/");
+  res.redirect("/");
 });
