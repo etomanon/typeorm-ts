@@ -7,7 +7,7 @@ export const Home: React.FC<RouteComponentProps> = ({ location }) => {
   useEffect(() => {
     const parsed = parse(location.search);
     if (parsed.logged) {
-      ky.get("/api/user/sub")
+      ky.get("/api/user/follows")
         .json<any>()
         .then(result => console.log(result))
         .catch(err => console.log(err));

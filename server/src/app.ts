@@ -6,6 +6,11 @@ import { createConnection } from "typeorm";
 import ExpressSession from "express-session";
 import { TypeormStore } from "connect-typeorm";
 import passport from "passport";
+import serveStatic from "serve-static";
+import serveIndex from "serve-index";
+import contentDisposition from "content-disposition";
+import { admin } from "./passport/admin";
+// import cors from 'cors';
 
 import { routes } from "./routes/routes";
 import { Session } from "./entities/Session";
@@ -17,6 +22,8 @@ createConnection().then(async connection => {
   // create and setup express app
   const app = express();
   app.use(bodyParser.json());
+  // enable CORS
+  // app.use(cors());
   // session for Passport.js with TypeORM
   const session = await connection.getRepository(Session);
   app.use(
@@ -24,8 +31,7 @@ createConnection().then(async connection => {
       resave: false,
       saveUninitialized: false,
       store: new TypeormStore({
-        cleanupLimit: 2,
-        limitSubquery: false,
+        cleanupLimit: 1,
         ttl: 86400
       }).connect(session),
       secret: process.env.SESSION_SECRET
@@ -35,6 +41,21 @@ createConnection().then(async connection => {
   app.use(passport.session());
   // register routes
   app.use("/api", ...routes);
+  // serve files
+  const setHeaders = (res, path) => {
+    res.setHeader("Content-Disposition", contentDisposition(path));
+  };
+  app.use(
+    "/file/",
+    admin,
+    serveStatic(join(__dirname, "/../files"), {
+      setHeaders
+    })
+  );
+  app.use(
+    "/file/",
+    serveIndex(join(__dirname, "/../files"), { view: "details", icons: true })
+  );
   // serve react build
   app.use(express.static(join(__dirname, "/../../client/build")));
   app.get("*", (req, res) => {

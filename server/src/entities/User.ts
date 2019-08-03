@@ -1,5 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
+enum Role {
+  admin = "admin",
+  user = "user"
+}
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -7,6 +12,9 @@ export class User {
 
   @Column()
   twitchId: string;
+
+  @Column({ type: "enum", enum: Role })
+  role: string;
 
   @Column()
   name: string;

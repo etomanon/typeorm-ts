@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 
 export const logged = (req: Request, res: Response, next) => {
+  console.log("req.user", req.user);
   if (req.user) {
-    next();
+    return next();
   } else {
-    res.redirect("/api/auth/twitch");
+    return res.status(401).json({ message: "Not logged in" });
   }
 };

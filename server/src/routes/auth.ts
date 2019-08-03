@@ -1,6 +1,8 @@
 import { authenticate } from "passport";
 import { Router } from "express";
 
+import * as auth from "../controllers/auth";
+
 export const router = Router();
 
 router.get("/auth/twitch", authenticate("twitch"));
@@ -8,16 +10,7 @@ router.get("/auth/twitch", authenticate("twitch"));
 router.get(
   "/auth/twitch/callback",
   authenticate("twitch", { failureRedirect: "/" }),
-  (req, res) => {
-    // Successful authentication
-    if (req.user) {
-      return res.redirect("/?logged=true");
-    }
-    res.redirect("/auth/twitch");
-  }
+  auth.authGetCallback
 );
 
-router.get("/auth/logout", (req, res) => {
-  req.logout();
-  res.redirect("/");
-});
+router.get("/auth/logout", auth.authGetLogout);

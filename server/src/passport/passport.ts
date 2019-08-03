@@ -4,6 +4,8 @@ import { getRepository } from "typeorm";
 
 import { User } from "../entities/User";
 
+const admins = process.env.ADMINS.split(",");
+
 use(
   new Strategy(
     {
@@ -16,15 +18,22 @@ use(
       try {
         const userRepository = await getRepository(User);
         let user = await userRepository.findOne({ twitchId: profile.id });
+        const role = admins.indexOf(profile.id) !== -1 ? "admin" : "user";
         if (!user) {
           user = await userRepository.create({
             twitchId: profile.id,
-            name: profile.login
+            name: profile.login,
+            role,
+            accessToken,
+            refreshToken
           });
+        } else {
+          user.accessToken = accessToken;
+          user.refreshToken = refreshToken;
+          user.role = role;
+          await userRepository.save(user);
         }
-        user.accessToken = accessToken;
-        user.refreshToken = refreshToken;
-        await userRepository.save(user);
+        console.log("USER strategy", user);
         return done(undefined, user);
       } catch (e) {
         console.log("ERROR", e);

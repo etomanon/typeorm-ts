@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpileOnly ./src/app.ts",
+    "dev": "ts-node-dev --respawn --no-notify --transpileOnly ./src/app.ts",
     "lint:es": "./node_modules/.bin/eslint ./src/**/*.ts --fix"
   },
   "lint-staged": {
@@ -45,6 +45,8 @@
     "@types/express-session": "^1.15.13",
     "body-parser": "^1.19.0",
     "connect-typeorm": "^1.1.1",
+    "content-disposition": "^0.5.3",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "got": "^9.6.0",
@@ -52,6 +54,8 @@
     "passport-twitch-new": "^0.0.1",
     "pg": "^7.12.0",
     "reflect-metadata": "^0.1.13",
+    "serve-index": "^1.9.1",
+    "serve-static": "^1.14.1",
     "typeorm": "^0.2.18",
     "typeorm-static": "^1.1.1"
   }

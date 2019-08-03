@@ -11,6 +11,7 @@ export const Header: React.FC = () => {
       <Flex>
         <Text mr={1}>Test Auth</Text>
         <NavLink to="/">Home</NavLink>
+        <Link href="/file">File</Link>
         <Link href="/api/auth/twitch">Login</Link>
       </Flex>
     </>

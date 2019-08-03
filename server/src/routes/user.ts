@@ -5,14 +5,16 @@ import * as user from "../controllers/user";
 
 export const router = Router();
 
-router.get("/user", user.userGetAll);
+router.get("/user", logged, user.userGet);
 
 router.get("/user/sub", logged, user.userGetSubs);
 
-router.get("/user/:id", user.userGetId);
+router.get("/user/follows", logged, user.userGetFollows);
 
-router.post("/user", user.userPost);
+// router.get("/user/:id", user.userGetId);
 
-router.put("/user/:id", user.userPutId);
+// router.post("/user", user.userPost);
 
-router.delete("/user/:id", user.userDeleteId);
+// router.put("/user/:id", user.userPutId);
+
+// router.delete("/user/:id", user.userDeleteId);
