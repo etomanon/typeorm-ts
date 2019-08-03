@@ -28,7 +28,7 @@ use(
             headers: { Authorization: `Bearer ${accessToken}` }
           }
         );
-        console.log("SUB PASS", sub);
+        console.log("SUB PASS body", sub.body);
         if (!user) {
           user = await userRepository.create({
             twitchId: profile.id,
