@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import { getRepository } from "typeorm";
 import got from "got";
 

@@ -1,5 +1,4 @@
 import { join } from "path";
-import { config } from "dotenv";
 import express from "express";
 import bodyParser from "body-parser";
 import { createConnection } from "typeorm";
@@ -15,7 +14,6 @@ import { admin } from "./passport/admin";
 import { routes } from "./routes/routes";
 import { Session } from "./entities/Session";
 import "./passport/passport";
-config();
 
 // create typeorm connection
 createConnection().then(async connection => {
@@ -41,7 +39,7 @@ createConnection().then(async connection => {
   app.use(passport.session());
   // register routes
   app.use("/api", ...routes);
-  // serve files
+  // serve files and enable download
   const setHeaders = (res, path) => {
     res.setHeader("Content-Disposition", contentDisposition(path));
   };

@@ -7,7 +7,6 @@ import { initialState } from './initialState';
 export function configureStore() {
   const middlewares = [thunk];
   let composeEnhancers = compose;
-
   if (
     process.env.NODE_ENV !== 'production' &&
     (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

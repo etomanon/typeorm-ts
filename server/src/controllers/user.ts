@@ -9,6 +9,7 @@ export const userGetSubs = async (req: Request, res: Response) => {
       `subscriptions?broadcaster_id=${encodeURIComponent(req.user.twitchId)}`,
       req
     );
+    console.log("api", api);
     return send(req, res, api, userGetSubs);
   } catch (e) {
     console.log("ERROR", e);

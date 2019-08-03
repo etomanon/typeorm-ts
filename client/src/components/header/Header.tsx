@@ -13,6 +13,7 @@ export const Header: React.FC = () => {
         <NavLink to="/">Home</NavLink>
         <Link href="/file">File</Link>
         <Link href="/api/auth/twitch">Login</Link>
+        <Link href="/api/auth/logout">Logout</Link>
       </Flex>
     </>
   );
