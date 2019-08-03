@@ -31,6 +31,11 @@ export const reducerUser: Reducer<UserState, UserActions> = (
         user: action.payload,
         pending: false,
       };
+    case getType(actions.userLogout):
+      return {
+        ...state,
+        user: undefined,
+      }
     default:
       return state;
   }
