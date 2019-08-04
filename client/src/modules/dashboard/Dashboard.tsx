@@ -17,9 +17,9 @@ export const Dashboard: React.FC<RouteComponentProps> = () => {
   return (
     <>
       {user.user && (
-        <Flex flexDirection="column">
-          <Text mb={2}>Účet: {user.user.name}</Text>
-          <Text>Role: {user.user.role}</Text>
+        <Flex flexDirection="column" alignItems="center">
+          <Text textAlign="center" mb={2}>Účet: {user.user.name}</Text>
+          <Text textAlign="center">Role: {user.user.role}</Text>
         </Flex>
       )}
     </>
