@@ -28,3 +28,22 @@ export const renewToken = async (req: Request) => {
     console.log("ERROR", e);
   }
 };
+
+export const renewTokenStreamer = async () => {
+  try {
+    const userRepository = await getRepository(User);
+    const user = await userRepository.findOne({
+      twitchId: process.env.STREAMER_ID
+    });
+    const refreshUrl = getUrl(user.refreshToken);
+    const refreshed = await got.post(refreshUrl, { json: true });
+    if (refreshed.body.status === 400) {
+      return undefined;
+    }
+    user.accessToken = refreshed.body.accessToken;
+    user.refreshToken = refreshed.body.refreshToken;
+    return userRepository.save(user);
+  } catch (e) {
+    console.log("ERROR", e);
+  }
+};

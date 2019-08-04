@@ -6,7 +6,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { Text } from "../../components/text/Text";
 
 export const Home: React.FC<RouteComponentProps> = () => {
-  // useEffect(() => {
+  // React.useEffect(() => {
   //   const parsed = parse(location.search);
   //   if (parsed.logged) {
   //     ky.get("/api/user/follows")

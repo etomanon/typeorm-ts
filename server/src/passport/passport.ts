@@ -1,13 +1,26 @@
 import { use, serializeUser, deserializeUser } from "passport";
 import { Strategy } from "passport-twitch-new";
-import { getRepository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 import { config } from "dotenv";
 
 import { User } from "../entities/User";
 import { got } from "../got/got";
+import { renewTokenStreamer } from "./renewToken";
 config();
 
 const admins = process.env.ADMINS.split(",");
+
+const getSub = async (userRepository: Repository<User>, profileId: string) => {
+  const streamer = await userRepository.findOne({
+    twitchId: process.env.STREAMER_ID
+  });
+  return got.get(
+    `subscriptions?broadcaster_id=${process.env.STREAMER_ID}&user_id=${profileId}`,
+    {
+      headers: { Authorization: `Bearer ${streamer.accessToken}` }
+    }
+  );
+};
 
 use(
   new Strategy(
@@ -21,14 +34,20 @@ use(
       try {
         const userRepository = await getRepository(User);
         let user = await userRepository.findOne({ twitchId: profile.id });
-        const role = admins.indexOf(profile.id) !== -1 ? "admin" : "user";
-        const sub = await got.get(
-          `subscriptions?broadcaster_id=${encodeURIComponent(profile.id)}`,
-          {
-            headers: { Authorization: `Bearer ${accessToken}` }
+
+        let role;
+        if (admins.indexOf(profile.id) !== -1) {
+          role = "admin";
+        } else {
+          let sub = await getSub(userRepository, profile.id);
+          if (sub.statusCode === 401) {
+            await renewTokenStreamer();
+            sub = await getSub(userRepository, profile.id);
           }
-        );
-        console.log("SUB PASS body", sub.body);
+          // TODO: change role to sub if subscriber
+          console.log("SUB", sub);
+          role = "user";
+        }
         if (!user) {
           user = await userRepository.create({
             twitchId: profile.id,
