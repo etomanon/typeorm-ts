@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "dev": "ts-node-dev --respawn --no-notify --transpileOnly ./src/app.ts",
     "lint:es": "./node_modules/.bin/eslint ./src/**/*.ts --fix"
   },
@@ -39,6 +40,7 @@
     "lint-staged": ">=8",
     "prettier": "^1.18.2",
     "ts-node-dev": "^1.0.0-pre.40",
+    "tslib": "^1.10.0",
     "typescript": "^3.5.3"
   },
   "dependencies": {
