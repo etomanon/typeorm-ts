@@ -68,7 +68,7 @@
     }
   },
   "lint-staged": {
-    "src/*.{tsx, ts}": [
+    "src/**/*.{tsx,ts}": [
       "yarn lint:es",
       "yarn lint:css",
       "git add"
