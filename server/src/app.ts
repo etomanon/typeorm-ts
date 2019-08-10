@@ -8,9 +8,10 @@ import passport from "passport";
 import serveStatic from "serve-static";
 import serveIndex from "serve-index";
 import contentDisposition from "content-disposition";
-import { admin } from "./passport/admin";
-// import cors from 'cors';
+import compression from "compression";
+import helmet from "helmet";
 
+import { admin } from "./passport/admin";
 import { routes } from "./routes/routes";
 import { Session } from "./entities/Session";
 import "./passport/passport";
@@ -20,8 +21,10 @@ createConnection().then(async connection => {
   // create and setup express app
   const app = express();
   app.use(bodyParser.json());
-  // enable CORS
-  // app.use(cors());
+  // gzip
+  app.use(compression());
+  // proper headers
+  app.use(helmet());
   // session for Passport.js with TypeORM
   const session = await connection.getRepository(Session);
   app.use(
