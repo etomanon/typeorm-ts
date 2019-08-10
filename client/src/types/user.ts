@@ -1,4 +1,4 @@
 export interface User {
   name: string;
-  role: "admin" | "user";
+  role: "admin" | "sub" | "user" ;
 }

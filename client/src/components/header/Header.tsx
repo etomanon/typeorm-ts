@@ -38,9 +38,11 @@ export const Header: React.FC = () => {
             <NavLink exact to="/dashboard" mr={[0, 3]} mb={[2, 0]}>
               Dashboard
             </NavLink>
-            <Link href="/file" mr={[0, 3]} mb={[2, 0]}>
-              Soubory
-            </Link>
+            {user.user.role !== "user" && (
+              <Link href="/file" mr={[0, 3]} mb={[2, 0]}>
+                Soubory
+              </Link>
+            )}
             <Link
               onClick={() => dispatch(userLogout())}
               href="/api/auth/logout"

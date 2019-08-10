@@ -7,9 +7,9 @@ export const router = Router();
 
 router.get("/user", logged, user.userGet);
 
-router.get("/user/sub", logged, user.userGetSubs);
+// router.get("/user/sub", logged, user.userGetSubs);
 
-router.get("/user/follows", logged, user.userGetFollows);
+// router.get("/user/follows", logged, user.userGetFollows);
 
 // router.get("/user/:id", user.userGetId);
 

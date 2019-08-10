@@ -27,7 +27,7 @@ use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "http://localhost:3001/api/auth/twitch/callback",
+      callbackURL: "https://clainadownload.cz/api/auth/twitch/callback",
       scope: "channel:read:subscriptions"
     },
     async (accessToken, refreshToken, profile, done) => {
@@ -44,9 +44,11 @@ use(
             await renewTokenStreamer();
             sub = await getSub(userRepository, profile.id);
           }
-          // TODO: change role to sub if subscriber
-          console.log("SUB", sub);
-          role = "user";
+          if (sub.body.data.length > 0) {
+            role = "sub";
+          } else {
+            role = "user";
+          }
         }
         if (!user) {
           user = await userRepository.create({

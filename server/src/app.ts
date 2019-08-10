@@ -11,7 +11,7 @@ import contentDisposition from "content-disposition";
 import compression from "compression";
 import helmet from "helmet";
 
-import { admin } from "./passport/admin";
+import { subOrAdmin } from "./passport/subOrAdmin";
 import { routes } from "./routes/routes";
 import { Session } from "./entities/Session";
 import "./passport/passport";
@@ -48,7 +48,7 @@ createConnection().then(async connection => {
   };
   app.use(
     "/file/",
-    admin,
+    subOrAdmin,
     serveStatic(join(__dirname, "/../files"), {
       setHeaders
     })

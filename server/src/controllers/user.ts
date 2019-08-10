@@ -1,31 +1,7 @@
 import { Request, Response } from "express";
 
-import { send } from "../utils/send";
-import { gotClientId, gotToken } from "../got/got";
-
-export const userGetSubs = async (req: Request, res: Response) => {
-  try {
-    const api = await gotToken(
-      `subscriptions?broadcaster_id=${encodeURIComponent(req.user.twitchId)}`,
-      req
-    );
-    console.log("api", api);
-    return send(req, res, api, userGetSubs);
-  } catch (e) {
-    console.log("ERROR", e);
-  }
-};
-
-export const userGetFollows = async (req: Request, res: Response) => {
-  try {
-    const api = await gotClientId(
-      `users/follows?from_id=${encodeURIComponent(req.user.twitchId)}`
-    );
-    return send(req, res, api, userGetFollows);
-  } catch (e) {
-    console.log("ERROR", e);
-  }
-};
+// import { send } from "../utils/send";
+// import { gotClientId, gotToken } from "../got/got";
 
 export const userGet = async (req: Request, res: Response) => {
   const { name, role } = req.user;
@@ -35,6 +11,30 @@ export const userGet = async (req: Request, res: Response) => {
   };
   res.json(userSubset);
 };
+
+// export const userGetSubs = async (req: Request, res: Response) => {
+//   try {
+//     const api = await gotToken(
+//       `subscriptions?broadcaster_id=${encodeURIComponent(req.user.twitchId)}`,
+//       req
+//     );
+//     console.log("api", api);
+//     return send(req, res, api, userGetSubs);
+//   } catch (e) {
+//     console.log("ERROR", e);
+//   }
+// };
+
+// export const userGetFollows = async (req: Request, res: Response) => {
+//   try {
+//     const api = await gotClientId(
+//       `users/follows?from_id=${encodeURIComponent(req.user.twitchId)}`
+//     );
+//     return send(req, res, api, userGetFollows);
+//   } catch (e) {
+//     console.log("ERROR", e);
+//   }
+// };
 
 // export const userGetId = async (req: Request, res: Response) => {
 //   const results = await getRepository(User).findOne(req.params.id);
