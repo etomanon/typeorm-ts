@@ -27,7 +27,10 @@ use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "https://clainadownload.cz/api/auth/twitch/callback",
+      callbackURL:
+        process.env.NODE_ENV === "production"
+          ? "https://clainadownload.cz/api/auth/twitch/callback"
+          : "http://localhost:3001/api/auth/twitch/callback",
       scope: "channel:read:subscriptions"
     },
     async (accessToken, refreshToken, profile, done) => {
@@ -58,6 +61,7 @@ use(
             accessToken,
             refreshToken
           });
+          await userRepository.save(user);
         } else {
           user.accessToken = accessToken;
           user.refreshToken = refreshToken;
