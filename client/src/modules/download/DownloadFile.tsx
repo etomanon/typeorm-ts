@@ -25,11 +25,11 @@ export const DownloadFile: React.FC<DownloadFileProps> = ({
   const [files, setFiles] = useState<File[]>([]);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (loading) return;
     setLoading(true);
     const formData = new FormData();
     files.forEach((f, i) => formData.append(`files${i}`, f));
-    formData.append("path", path);
-    ky.post("file/rename", {
+    ky.post(`file/upload?path=${encodeURIComponent(path)}`, {
       body: formData
     })
       .then(() => {
@@ -76,11 +76,15 @@ export const DownloadFile: React.FC<DownloadFileProps> = ({
             autoComplete="off"
             name="files"
             width={1}
-            type="text"
+            type="file"
+            multiple
             placeholder="Název"
             required
             onChange={onChange}
           />
+          <Text mt={2} mb={2} fontSize={1} textAlign="center" width={1}>
+            Limit 2 GB na 1 soubor
+          </Text>
           <Button width={1} mt={2} mb={2} variant="filled">
             Nahrát
           </Button>

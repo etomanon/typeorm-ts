@@ -15,3 +15,5 @@ router.delete("/file", admin, file.fileDelete);
 router.post("/file/rename", admin, file.fileRenamePost);
 
 router.post("/file/upload", admin, file.fileUploadPost);
+
+router.get("/file/free", admin, file.fileFreeGet);

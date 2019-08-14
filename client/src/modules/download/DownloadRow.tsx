@@ -5,6 +5,7 @@ import { get } from "lodash";
 import { Delete } from "styled-icons/material/Delete";
 import { Edit } from "styled-icons/material/Edit";
 import Modal from "styled-react-modal";
+import { Confirm } from "../../components/confirm/Confirm";
 
 import { UserState } from "../../redux/user/reducers";
 import {
@@ -33,6 +34,7 @@ export const DownloadRow: React.FC<DownloadRowProps> = ({
   loadData
 }) => {
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const onClick = () => {
     if (data.type === "directory") {
       setPath(data.path);
@@ -40,8 +42,7 @@ export const DownloadRow: React.FC<DownloadRowProps> = ({
       window.open("file/" + data.path, "_blank");
     }
   };
-  const handleDelete = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.stopPropagation();
+  const handleDelete = () => {
     onDelete(data.path);
   };
   const handleEdit = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -55,27 +56,34 @@ export const DownloadRow: React.FC<DownloadRowProps> = ({
           <React.Fragment key={c.path}>
             {data.type === "directory" && c.path === "size" ? null : (
               <DownloadCell width={c.width}>
-                {get(data, c.path)}
-                <DownloadIcon>
+                <DownloadIcon visible mr={1}>
                   {c.path === "name" ? (
                     data.type === "directory" ? (
-                      <FolderOpen size="2.2rem" />
+                      <FolderOpen size="2.8rem" />
                     ) : (
-                      <FileBlank size="2.2rem" />
+                      <FileBlank size="2.8rem" />
                     )
                   ) : null}
                 </DownloadIcon>
+                {get(data, c.path)}
               </DownloadCell>
             )}
           </React.Fragment>
         ))}
         {user.user && user.user.role === "admin" && (
-          <DownloadCell ml="auto">
-            <DownloadIcon onClick={handleDelete} color="error" mr={2}>
-              <Delete size="2.2rem" />
+          <DownloadCell ml={["0", "auto"]}>
+            <DownloadIcon
+              onClick={e => {
+                e.stopPropagation();
+                setOpenDelete(true);
+              }}
+              color="error"
+              mr={["auto", 3]}
+            >
+              <Delete size="2.8rem" />
             </DownloadIcon>
             <DownloadIcon onClick={handleEdit}>
-              <Edit size="2.2rem" />
+              <Edit size="2.8rem" />
             </DownloadIcon>
           </DownloadCell>
         )}
@@ -92,6 +100,12 @@ export const DownloadRow: React.FC<DownloadRowProps> = ({
           oldValue={data.name}
         />
       </Modal>
+      <Confirm
+        open={openDelete}
+        setOpen={setOpenDelete}
+        confirmText={`Opravdu chcete smazat ${data.name}?`}
+        onConfirm={handleDelete}
+      />
     </>
   );
 };

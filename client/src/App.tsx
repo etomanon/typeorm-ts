@@ -18,7 +18,7 @@ const App: React.FC = () => {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <ModalProvider>
-            <SnackbarProvider>
+            <SnackbarProvider autoHideDuration={2500}>
               <GlobalStyles />
               <Router />
             </SnackbarProvider>

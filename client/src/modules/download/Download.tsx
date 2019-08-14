@@ -91,7 +91,7 @@ export const Download: React.FC<RouteComponentProps> = () => {
             <DownloadHeaderCell width={1}>
               Zpět
               <DownloadIcon>
-                <ArrowBack size="2.2rem" />
+                <ArrowBack size="2.8rem" />
               </DownloadIcon>
             </DownloadHeaderCell>
           </DownloadRowStyled>

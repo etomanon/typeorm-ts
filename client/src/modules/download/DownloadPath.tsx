@@ -16,7 +16,7 @@ export const DownloadPath: React.FC<DownloadPathProps> = ({
 }) => {
   return (
     <Flex
-      mt={1}
+      mt={2}
       mb={2}
       width={1}
       justifyContent="center"

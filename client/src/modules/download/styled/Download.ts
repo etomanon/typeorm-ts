@@ -46,13 +46,21 @@ export const DownloadRow = styled.div`
   }
 `;
 
-export const DownloadIcon = styled.div<ColorProps & SpaceProps>`
-  margin-left: 1rem;
+interface DownloadIconProps {
+  visible?: true;
+}
+
+export const DownloadIcon = styled.div<DownloadIconProps & ColorProps & SpaceProps>`
   color: ${({ theme }) => theme.colors.primary};
   ${color};
+  opacity: ${props => props.visible ? 1 : 0};
   transition: all 0.2s ease-in;
   ${/*sc-selector*/ DownloadRow}:hover & {
     color: #fff ${color};
+    opacity: 1;
+  }
+  @media (hover: none) {
+    opacity: 1;
   }
   ${space};
 `;

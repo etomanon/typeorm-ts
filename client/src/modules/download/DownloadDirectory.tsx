@@ -27,6 +27,7 @@ export const DownloadDirectory: React.FC<DownloadDirectoryProps> = ({
   const [name, setName] = useState(oldValue ? oldValue : "");
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (loading) return;
     setLoading(true);
     const request = oldValue
       ? ky.post("file/rename", {
