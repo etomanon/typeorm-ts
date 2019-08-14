@@ -7,7 +7,7 @@ export const pending = (state: any) => {
   return {
     ...state,
     pending: true,
-    error: false,
+    error: false
   };
 };
 
@@ -15,6 +15,6 @@ export const rejected = (state: any) => {
   return {
     ...state,
     error: true,
-    pending: false,
+    pending: false
   };
 };

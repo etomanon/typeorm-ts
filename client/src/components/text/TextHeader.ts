@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-import { display, DisplayProps, space, SpaceProps } from 'styled-system';
-
+import styled from "styled-components";
+import { display, DisplayProps, space, SpaceProps } from "styled-system";
 
 export const Text = styled.div<DisplayProps & SpaceProps>`
   display: inline-block;
@@ -8,4 +7,4 @@ export const Text = styled.div<DisplayProps & SpaceProps>`
   font-size: 2.2rem;
   color: ${({ theme }) => theme.colors.primary};
   ${space};
-`
+`;

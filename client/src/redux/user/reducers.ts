@@ -1,10 +1,10 @@
-import { ActionType, getType } from 'typesafe-actions';
-import { Reducer } from 'redux';
+import { ActionType, getType } from "typesafe-actions";
+import { Reducer } from "redux";
 
-import { pending, rejected, StateCommon } from '../utils/common';
-import { User } from '../../types/user';
+import { pending, rejected, StateCommon } from "../utils/common";
+import { User } from "../../types/user";
 
-import * as actions from './actions';
+import * as actions from "./actions";
 
 export interface UserState extends StateCommon {
   user?: User;
@@ -13,12 +13,12 @@ export interface UserState extends StateCommon {
 export const initialUser: UserState = {
   user: undefined,
   pending: false,
-  error: false,
+  error: false
 };
 
 export const reducerUser: Reducer<UserState, UserActions> = (
   state = initialUser,
-  action,
+  action
 ) => {
   switch (action.type) {
     case getType(actions.userGetAsync.request):
@@ -29,13 +29,13 @@ export const reducerUser: Reducer<UserState, UserActions> = (
       return {
         ...state,
         user: action.payload,
-        pending: false,
+        pending: false
       };
     case getType(actions.userLogout):
       return {
         ...state,
-        user: undefined,
-      }
+        user: undefined
+      };
     default:
       return state;
   }

@@ -1,8 +1,8 @@
-import { initialUser, UserState } from './user/reducers';
+import { initialUser, UserState } from "./user/reducers";
 
 // Initial state for store
 export const initialState = {
-  user: initialUser,
+  user: initialUser
 };
 
 export interface AppState {

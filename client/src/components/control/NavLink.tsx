@@ -5,10 +5,13 @@ import { space, SpaceProps } from "styled-system";
 export const NavLink = styled(ReactNavLink).attrs({
   activeClassName: "active-navlink"
 })<SpaceProps>`
-  color: ${({ theme }) => theme.colors.primary};
+  color: inherit;
   text-decoration: none;
   &.${p => p.activeClassName} {
     font-weight: 500;
+  }
+  &:hover {
+    text-decoration: underline;
   }
   ${space};
 `;

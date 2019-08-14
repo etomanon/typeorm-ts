@@ -24,7 +24,7 @@
     "@typescript-eslint",
     "react",
     "jsx-a11y",
-    "prettier",
+    "prettier"
   ],
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
@@ -32,19 +32,7 @@
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/ban-ts-ignore": "error",
-    "no-console": "off",
-    "no-restricted-imports": [
-      "error",
-      {
-        "paths": [
-          {
-            "name": "styled-components",
-            "message": "Please import from styled-components/macro."
-          }
-        ],
-        "patterns": ["!styled-components/macro"]
-      }
-    ]
+    "no-console": "off"
   },
   "settings": {
     "react": {

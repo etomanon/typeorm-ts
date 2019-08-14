@@ -1,15 +1,15 @@
-import { createAsyncAction, createAction } from 'typesafe-actions';
-import { Dispatch } from 'redux';
+import { createAsyncAction, createAction } from "typesafe-actions";
+import { Dispatch } from "redux";
 
-import ky from '../../ky/ky';
-import { User } from '../../types/user';
+import ky from "../../ky/ky";
+import { User } from "../../types/user";
 
-export const userLogout = createAction('USER_LOGOUT');
+export const userLogout = createAction("USER_LOGOUT");
 
 export const userGetAsync = createAsyncAction(
-  'USER_GET_REQUEST',
-  'USER_GET_SUCCESS',
-  'USER_GET_FAILURE',
+  "USER_GET_REQUEST",
+  "USER_GET_SUCCESS",
+  "USER_GET_FAILURE"
 )<void, User, void>();
 
 export const userRequest = async (): Promise<User | null> => {

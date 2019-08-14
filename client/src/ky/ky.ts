@@ -1,7 +1,7 @@
-import kyDefault from 'ky';
+import kyDefault from "ky";
 
 const ky = kyDefault.extend({
-  prefixUrl: "/api/",
-})
+  prefixUrl: "/api/"
+});
 
 export default ky;

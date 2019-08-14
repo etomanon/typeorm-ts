@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import { space, SpaceProps } from 'styled-system';
+import styled from "styled-components";
+import { space, SpaceProps } from "styled-system";
 
-
-export const Wrapper = styled.main<SpaceProps>`
+export const WrapperMain = styled.main<SpaceProps>`
   max-width: 75em;
-  ${space} 
-`
+  width: 100%;
+  ${space}
+`;

@@ -3,6 +3,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Flex } from "@rebass/grid";
 
+import ky from "../../ky/ky";
 import { userGet } from "../../redux/user/actions";
 import { selectorUser } from "../../redux/user/selectors";
 
@@ -20,6 +21,9 @@ export const Dashboard: React.FC<RouteComponentProps> = () => {
   useEffect(() => {
     dispatch(userGet());
   }, [dispatch]);
+  useEffect(() => {
+    ky.get("file");
+  }, []);
   return (
     <>
       {user.user && (
@@ -28,7 +32,7 @@ export const Dashboard: React.FC<RouteComponentProps> = () => {
             Účet: {user.user.name}
           </Text>
           <Text textAlign="center">Role: {roles[user.user.role]}</Text>
-          <Text textAlign="center">
+          <Text textAlign="center" fontSize={1}>
             Pro aktualizaci role se prosím odhlašte a znovu přilašte.
           </Text>
         </Flex>
