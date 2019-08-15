@@ -30,8 +30,7 @@ export const DownloadFile: React.FC<DownloadFileProps> = ({
     const formData = new FormData();
     files.forEach((f, i) => formData.append(`files${i}`, f));
     ky.post(`file/upload?path=${encodeURIComponent(path)}`, {
-      body: formData,
-      timeout: 1000 * 60 * 60 * 24 * 7
+      body: formData
     })
       .then(() => {
         enqueueSnackbar("Nahráno", { variant: "success" });
