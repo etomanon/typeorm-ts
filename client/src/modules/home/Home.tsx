@@ -8,7 +8,7 @@ export const Home: React.FC<RouteComponentProps> = () => {
   return (
     <>
       <Text display="block" textAlign="center">
-        Stránka pro sdílení souborů s předplatitely{" "}
+        Stránka pro sdílení souborů s předplatiteli{" "}
         <Link
           fontWeight={500}
           color="primary"
