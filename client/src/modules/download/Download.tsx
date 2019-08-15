@@ -38,7 +38,7 @@ export const Download: React.FC<RouteComponentProps> = () => {
   const loadData = useCallback(() => {
     setData([]);
     setLoading(true);
-    ky.post("file", { json: { path }, timeout: false })
+    ky.post("file", { json: { path } })
       .json<DataProps[]>()
       .then(res => {
         setData(res);
