@@ -39,6 +39,7 @@ export const HeaderWrapperLinks = styled.header<MobileMenuProps>`
   transition: all .25s ease-in;
   transform: translate3d(100%, 0, 0);
   height: 100%;
+  z-index: 2;
   ${props =>
     props.active &&
     css`
@@ -64,7 +65,7 @@ export const HeaderBurger = styled.div<MobileMenuProps>`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  z-index: 9999;
+  z-index: 29;
   @media (min-width: ${({ theme }) => theme.breakpoints[0]}) {
     display: none;
   }

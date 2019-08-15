@@ -1,14 +1,14 @@
 import React from "react";
 import { RouteComponentProps } from "react-router-dom";
 
-import { Link } from "../../components/control/Link";
 import { Text } from "../../components/text/Text";
+import { Link } from "../../components/control/Link";
 
-export const Home: React.FC<RouteComponentProps> = () => {
+export const SubOnly: React.FC<RouteComponentProps> = () => {
   return (
     <>
       <Text display="block" textAlign="center">
-        Stránka pro sdílení souborů s předplatitely{" "}
+        Stránka je pouze pro předplatitele{" "}
         <Link
           fontWeight={500}
           color="primary"

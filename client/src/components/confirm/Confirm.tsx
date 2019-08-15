@@ -10,13 +10,15 @@ interface ConfirmProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   confirmText: string;
   onConfirm: () => void;
+  error?: boolean;
 }
 
 export const Confirm: React.FC<ConfirmProps> = ({
   open,
   setOpen,
   confirmText,
-  onConfirm
+  onConfirm,
+  error
 }) => {
   return (
     <Modal
@@ -39,7 +41,7 @@ export const Confirm: React.FC<ConfirmProps> = ({
         <Button
           width={0.45}
           mb={3}
-          variant="filled"
+          variant={error ? "error" : "filled"}
           onClick={() => {
             onConfirm();
             setOpen(false);

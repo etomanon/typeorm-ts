@@ -1,67 +1,14 @@
 import { Request, Response } from "express";
-import { readdir, stat, Stats, mkdir, remove, rename } from "fs-extra";
-import { join, relative } from "path";
+import { mkdir, remove, rename, stat } from "fs-extra";
+import { join, parse, relative } from "path";
 import { sortBy } from "lodash";
 import formidable from "formidable";
 import checkDiskSpace from "check-disk-space";
+import find from "find";
 
-const pathGlobal = join(__dirname, "../../files");
+import { readDirectory, pathGlobal, formatBytes } from "../utils/file";
 
-const formatBytes = (bytes, decimals = 2) => {
-  if (bytes === 0) return "0 Bytes";
-
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-};
-
-const getStatsOrSubFiles = (path: string, file: string, stats: Stats) => {
-  return new Promise((resolve, reject) => {
-    const pathDirectory = path + "/" + file;
-    if (stats.isDirectory()) {
-      resolve({
-        name: file,
-        type: "directory",
-        path: relative(pathGlobal, pathDirectory),
-        size: 0
-      });
-      // gets items recursive
-      // return readDirectory(pathDirectory).then(data => {
-      //   return Promise.all(data).then(data => resolve({
-      //     name: file,
-      //     type: "directory",
-      //     path: relative(pathGlobal, pathDirectory),
-      //     size: 0,
-      //     items: data
-      //   }))
-      // })
-    }
-    resolve({
-      name: file,
-      type: "file",
-      path: relative(pathGlobal, pathDirectory),
-      size: formatBytes(stats.size)
-    });
-  });
-};
-
-const getStat = (items: string[], path: string) => {
-  const promisesStats = items.map(item => {
-    const pathFile = path + "/" + item;
-    const info = stat(pathFile);
-    return info.then(stats => getStatsOrSubFiles(path, item, stats));
-  });
-  return promisesStats;
-};
-
-const readDirectory = (path: string) =>
-  readdir(path).then(items => getStat(items, path));
-
-// get whole file & folders tree in /files folder
+// get all files & folders for requested path (nto recursively)
 export const filePost = async (req: Request, res: Response) => {
   const pathSearch = join(pathGlobal, "/", req.body.path);
   readDirectory(pathSearch).then(data =>
@@ -70,7 +17,15 @@ export const filePost = async (req: Request, res: Response) => {
         data.filter(d => d.type === "directory"),
         "name"
       );
-      const files = sortBy(data.filter(d => d.type === "file"), "name");
+
+      const noHiddenFiles = data.filter(
+        // eslint-disable-next-line no-useless-escape
+        item => !/(^|\/)\.[^\/\.]/g.test(item.name)
+      );
+      const files = sortBy(
+        noHiddenFiles.filter(d => d.type === "file"),
+        "name"
+      );
       const result = [...directories, ...files];
       res.json(result);
     })
@@ -106,7 +61,8 @@ export const fileRenamePost = async (req: Request, res: Response) => {
 export const fileUploadPost = async (req: Request, res: Response) => {
   const pathSub = req.query.path;
   const form = new formidable.IncomingForm();
-  form.maxFileSize = 2000 * 1024 * 1024;
+  // limit 20 GB
+  form.maxFileSize = 20000 * 1024 * 1024;
   form.multiples = true;
   form.parse(req);
   form
@@ -122,6 +78,7 @@ export const fileUploadPost = async (req: Request, res: Response) => {
     });
 };
 
+// get free space on disk
 export const fileFreeGet = async (req: Request, res: Response) => {
   checkDiskSpace("/")
     .then(result => {
@@ -129,5 +86,37 @@ export const fileFreeGet = async (req: Request, res: Response) => {
         free: formatBytes(result.free)
       });
     })
+    .catch(err => res.json({ err }));
+};
+
+// find file recursively full text search
+export const fileSearchGet = (req: Request, res: Response) => {
+  const searchName = req.query.name;
+  const reg = new RegExp(searchName, "gi");
+  const searchPromise = new Promise((resolve, reject) => {
+    find.file(reg, pathGlobal, files => {
+      const filesPromises = files.map(f => {
+        return new Promise((resolve, reject) => {
+          const info = stat(f);
+          info
+            .then(stats => {
+              resolve({
+                name: parse(f).base,
+                type: "file",
+                path: relative(pathGlobal, f),
+                size: formatBytes(stats.size)
+              });
+            })
+            .catch(err => reject(err));
+        });
+      });
+      Promise.all(filesPromises)
+        .then(files => resolve(files))
+        .catch(err => reject(err));
+    });
+  });
+
+  searchPromise
+    .then(files => res.json({ files }))
     .catch(err => res.json({ err }));
 };

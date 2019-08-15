@@ -2,6 +2,8 @@ import styled, { css } from "styled-components";
 import {
   display,
   DisplayProps,
+  alignItems,
+  AlignItemsProps,
   space,
   SpaceProps,
   fontSize,
@@ -22,20 +24,27 @@ interface TextProps {
 
 const cssPointer = css`
   cursor: pointer;
+  transition: color .2s ease-in;
+  &:hover {
+    color: ${({theme}) => theme.colors.primary}
+  }
 `;
 
+// eslint-disable-next-line
 export const Text = styled.div<
+  AlignItemsProps &
   WidthProps &
-    TextProps &
-    DisplayProps &
-    SpaceProps &
-    FontSizeProps &
-    TextAlignProps &
-    FontWeightProps &
-    ColorProps
->`
+  TextProps &
+  DisplayProps &
+  SpaceProps &
+  FontSizeProps &
+  TextAlignProps &
+  FontWeightProps &
+  ColorProps
+  >`
   display: inline-block;
   ${display};
+  ${alignItems};
   ${space};
   ${fontSize};
   ${textAlign};

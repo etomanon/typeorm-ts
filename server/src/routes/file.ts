@@ -8,6 +8,8 @@ export const router = Router();
 
 router.post("/file", subOrAdmin, file.filePost);
 
+router.get("/file/search", subOrAdmin, file.fileSearchGet);
+
 router.post("/file/directory", admin, file.fileDirectoryPost);
 
 router.delete("/file", admin, file.fileDelete);

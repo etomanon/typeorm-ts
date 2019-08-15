@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { width, WidthProps, space, SpaceProps } from "styled-system";
 
 interface ButtonProps {
-  variant?: "filled";
+  variant?: "filled" | "error";
 }
 
 const cssFilled = css`
@@ -12,6 +12,17 @@ const cssFilled = css`
   &:focus {
     background: #fff;
     color: #000;
+  }
+`;
+
+const cssError = css`
+ background: ${({ theme }) => theme.colors.error};
+color: #fff;
+  border: 2px solid ${({ theme }) => theme.colors.error};
+  &:hover,
+  &:focus {
+    background: #fff;
+    color: ${({ theme }) => theme.colors.error};
   }
 `;
 
@@ -35,6 +46,7 @@ export const Button = styled.button<ButtonProps & WidthProps & SpaceProps>`
     outline: 0;
   }
   ${props => props.variant === "filled" && cssFilled}
+  ${props => props.variant === "error" && cssError}
   ${width};
   ${space};
 `;

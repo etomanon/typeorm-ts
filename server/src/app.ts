@@ -25,6 +25,8 @@ createConnection().then(async connection => {
   app.use(compression());
   // proper headers
   app.use(helmet());
+  // no cache
+  app.use(helmet.noCache());
   // session for Passport.js with TypeORM
   const session = await connection.getRepository(Session);
   app.use(

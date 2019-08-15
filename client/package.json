@@ -5,11 +5,13 @@
   "dependencies": {
     "@material-ui/core": "^4.3.2",
     "@rebass/grid": "^6.0.0",
+    "@types/react-copy-to-clipboard": "^4.2.6",
     "@types/react-transition-group": "^4.2.2",
     "ky": "^0.11.2",
     "lodash": "^4.17.15",
     "notistack": "^0.8.9",
     "react": "^16.8.6",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.8.6",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",

@@ -1,11 +1,13 @@
 import styled from "styled-components";
-import { space, SpaceProps } from "styled-system";
+import { space, SpaceProps, color, ColorProps, fontWeight, FontWeightProps } from "styled-system";
 
-export const Link = styled.a<SpaceProps>`
+export const Link = styled.a<FontWeightProps & SpaceProps & ColorProps>`
   color: inherit;
   text-decoration: none;
   &:hover {
     text-decoration: underline;
   }
-  ${space}
+  ${space};
+  ${color};
+  ${fontWeight};
 `;

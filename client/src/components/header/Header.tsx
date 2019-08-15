@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Flex } from "@rebass/grid";
 import { useSwipeable } from "react-swipeable";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 import { userLogout, userGet } from "../../redux/user/actions";
 import { selectorUser } from "../../redux/user/selectors";
@@ -17,9 +18,9 @@ import {
   HeaderBurger,
   HeaderBurgerLine
 } from "./styled/Header";
-// import logo from "./logo.webp";
+import logo from "./logo.webp";
 
-export const Header: React.FC = () => {
+const HeaderView: React.FC<RouteComponentProps> = ({ history }) => {
   const dispatch = useDispatch();
   const user = useSelector(selectorUser);
   const [active, setActive] = useState(false);
@@ -36,10 +37,16 @@ export const Header: React.FC = () => {
         m={["1rem 0.5rem", "1rem 0.5rem", "1rem auto"]}
         flexDirection={["column", "row"]}
       >
-        <Flex width={1} justifyContent="center" alignItems="center" mb={3}>
-          {/* <Logo src={logo} /> */}
+        <Flex
+          width={1}
+          justifyContent="center"
+          alignItems="center"
+          mb={3}
+          onClick={() => history.push("/")}
+        >
+          <Logo src={logo} />
           <Text ml={2} mr={3} fontSize={4} mb={0}>
-            Lorem ipsum
+            Art by Claina
           </Text>
         </Flex>
         <HeaderBurger active={active} onClick={() => setActive(prev => !prev)}>
@@ -48,32 +55,56 @@ export const Header: React.FC = () => {
           <HeaderBurgerLine active={active} />
         </HeaderBurger>
         <HeaderWrapperLinks active={active} {...handlers}>
-          <NavLink exact to="/" mr={[0, 3]} mb={[2, 0]}>
+          <NavLink
+            exact
+            to="/"
+            mr={[0, 3]}
+            mb={[2, 0]}
+            onClick={() => setActive(false)}
+          >
             Domů
           </NavLink>
           {user.user ? (
             <>
-              <NavLink exact to="/dashboard" mr={[0, 3]} mb={[2, 0]}>
+              <NavLink
+                exact
+                to="/dashboard"
+                mr={[0, 3]}
+                mb={[2, 0]}
+                onClick={() => setActive(false)}
+              >
                 Dashboard
               </NavLink>
               {user.user.role !== "user" && (
-                <NavLink to="/download" mr={[0, 3]} mb={[2, 0]}>
+                <NavLink
+                  to="/download"
+                  mr={[0, 3]}
+                  mb={[2, 0]}
+                  onClick={() => setActive(false)}
+                >
                   Soubory
                 </NavLink>
               )}
               <Link
                 mt={[4, 0]}
-                onClick={() => dispatch(userLogout())}
+                onClick={() => {
+                  dispatch(userLogout());
+                  setActive(false);
+                }}
                 href="/api/auth/logout"
               >
                 Odhlásit se
               </Link>
             </>
           ) : (
-            <Link href="/api/auth/twitch">Přihlásit se</Link>
+            <Link onClick={() => setActive(false)} href="/api/auth/twitch">
+              Přihlásit se
+            </Link>
           )}
         </HeaderWrapperLinks>
       </HeaderWrapper>
     </>
   );
 };
+
+export const Header = withRouter(HeaderView);

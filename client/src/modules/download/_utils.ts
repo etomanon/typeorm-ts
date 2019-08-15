@@ -9,11 +9,13 @@ export const columns = [
   {
     path: "name",
     name: "Název",
-    width: ["100%", "40rem"]
+    width: ["100%", "100%", "40rem"],
+    widthHeader: ["auto", "auto", "40rem"]
   },
   {
     path: "size",
     name: "Velikost",
-    width: ["100%", "25rem"]
+    width: ["100%", "100%", "25rem"],
+    widthHeader: ["auto", "auto", "25rem"]
   }
 ];

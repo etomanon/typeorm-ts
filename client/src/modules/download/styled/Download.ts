@@ -16,17 +16,20 @@ export const DownloadWrapper = styled.div`
 
 export const DownloadHeader = styled.div`
   display: flex;
+  flex-wrap: wrap;
   padding: 1rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.primary};
 `;
 
-export const DownloadHeaderCell = styled.div<WidthProps>`
+export const DownloadHeaderCell = styled.div<WidthProps & SpaceProps>`
+  position: relative;
   display: flex;
   align-items: center;
   padding: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 1px;
   ${width};
+  ${space};
 `;
 
 export const DownloadRow = styled.div`

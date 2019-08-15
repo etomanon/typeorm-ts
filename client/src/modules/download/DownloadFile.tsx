@@ -83,7 +83,7 @@ export const DownloadFile: React.FC<DownloadFileProps> = ({
             onChange={onChange}
           />
           <Text mt={2} mb={2} fontSize={1} textAlign="center" width={1}>
-            Limit 2 GB na 1 soubor
+            Limit 20 GB na 1 soubor
           </Text>
           <Button width={1} mt={2} mb={2} variant="filled">
             Nahrát

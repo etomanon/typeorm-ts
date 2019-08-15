@@ -4,9 +4,12 @@ import { FolderOpen } from "styled-icons/boxicons-regular/FolderOpen";
 import { get } from "lodash";
 import { Delete } from "styled-icons/material/Delete";
 import { Edit } from "styled-icons/material/Edit";
+import { Link } from "styled-icons/boxicons-regular/Link";
+import CopyToClipboard from "react-copy-to-clipboard";
 import Modal from "styled-react-modal";
-import { Confirm } from "../../components/confirm/Confirm";
+import { useSnackbar } from "notistack";
 
+import { Confirm } from "../../components/confirm/Confirm";
 import { UserState } from "../../redux/user/reducers";
 import {
   DownloadRow as DownloadRowStyled,
@@ -33,15 +36,18 @@ export const DownloadRow: React.FC<DownloadRowProps> = ({
   path,
   loadData
 }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
+  const [openDownload, setOpenDownload] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const onClick = () => {
     if (data.type === "directory") {
       setPath(data.path);
     } else {
-      window.open("file/" + data.path, "_blank");
+      setOpenDownload(true);
     }
   };
+  const onDownload = () => window.open("file/" + data.path, "_blank");
   const handleDelete = () => {
     onDelete(data.path);
   };
@@ -82,8 +88,20 @@ export const DownloadRow: React.FC<DownloadRowProps> = ({
             >
               <Delete size="2.8rem" />
             </DownloadIcon>
-            <DownloadIcon onClick={handleEdit}>
+            <DownloadIcon onClick={handleEdit} mr={3}>
               <Edit size="2.8rem" />
+            </DownloadIcon>
+            <DownloadIcon onClick={e => e.stopPropagation()}>
+              <CopyToClipboard
+                text={`${window.location.origin}/file/${data.path}`}
+                onCopy={() =>
+                  enqueueSnackbar("Download link zkopírován do schránky", {
+                    variant: "info"
+                  })
+                }
+              >
+                <Link size="2.8rem" />
+              </CopyToClipboard>
             </DownloadIcon>
           </DownloadCell>
         )}
@@ -101,10 +119,17 @@ export const DownloadRow: React.FC<DownloadRowProps> = ({
         />
       </Modal>
       <Confirm
+        open={openDownload}
+        setOpen={setOpenDownload}
+        confirmText={`Stáhnout soubor ${data.name}?`}
+        onConfirm={onDownload}
+      />
+      <Confirm
         open={openDelete}
         setOpen={setOpenDelete}
-        confirmText={`Opravdu chcete smazat ${data.name}?`}
+        confirmText={`Smazat ${data.name}?`}
         onConfirm={handleDelete}
+        error
       />
     </>
   );
