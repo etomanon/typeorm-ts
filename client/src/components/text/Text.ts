@@ -24,24 +24,24 @@ interface TextProps {
 
 const cssPointer = css`
   cursor: pointer;
-  transition: color .2s ease-in;
+  transition: color 0.2s ease-in;
   &:hover {
-    color: ${({theme}) => theme.colors.primary}
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
 // eslint-disable-next-line
 export const Text = styled.div<
   AlignItemsProps &
-  WidthProps &
-  TextProps &
-  DisplayProps &
-  SpaceProps &
-  FontSizeProps &
-  TextAlignProps &
-  FontWeightProps &
-  ColorProps
-  >`
+    WidthProps &
+    TextProps &
+    DisplayProps &
+    SpaceProps &
+    FontSizeProps &
+    TextAlignProps &
+    FontWeightProps &
+    ColorProps
+>`
   display: inline-block;
   ${display};
   ${alignItems};
