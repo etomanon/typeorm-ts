@@ -24,16 +24,22 @@ export const Dashboard: React.FC<RouteComponentProps> = () => {
   useEffect(() => {
     ky.get("file");
   }, []);
+
   return (
     <>
       {user.user && (
         <Flex flexDirection="column" alignItems="center">
           <Text textAlign="center" mb={2}>
-            Účet: {user.user.name}
+            Vítejte {user.user.name}
           </Text>
-          <Text textAlign="center">Role: {roles[user.user.role]}</Text>
+          <Text
+            textAlign="center"
+            color={user.user.role === "user" ? "error" : "primary"}
+          >
+            Role: {roles[user.user.role]}
+          </Text>
           <Text textAlign="center" fontSize={1}>
-            Pro aktualizaci role se prosím odhlašte a znovu přilašte.
+            Pro aktualizaci role se prosím odhlašte a znovu přihlašte.
           </Text>
         </Flex>
       )}

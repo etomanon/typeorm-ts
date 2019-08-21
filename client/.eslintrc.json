@@ -23,7 +23,6 @@
   "plugins": [
     "@typescript-eslint",
     "react",
-    "jsx-a11y",
     "prettier"
   ],
   "rules": {

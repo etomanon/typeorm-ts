@@ -16,13 +16,25 @@ const cssFilled = css`
 `;
 
 const cssError = css`
- background: ${({ theme }) => theme.colors.error};
-color: #fff;
+  background: ${({ theme }) => theme.colors.error};
+  color: #fff;
   border: 2px solid ${({ theme }) => theme.colors.error};
   &:hover,
   &:focus {
     background: #fff;
     color: ${({ theme }) => theme.colors.error};
+  }
+`;
+
+const cssDisabled = css`
+  background: #fff;
+  color: ${({ theme }) => theme.colors.grey};
+  border: 2px solid ${({ theme }) => theme.colors.grey};
+  cursor: not-allowed;
+  &:hover,
+  &:focus {
+    background: #fff;
+    color: ${({ theme }) => theme.colors.grey};
   }
 `;
 
@@ -47,6 +59,7 @@ export const Button = styled.button<ButtonProps & WidthProps & SpaceProps>`
   }
   ${props => props.variant === "filled" && cssFilled}
   ${props => props.variant === "error" && cssError}
+  ${props => props.disabled && cssDisabled}
   ${width};
   ${space};
 `;

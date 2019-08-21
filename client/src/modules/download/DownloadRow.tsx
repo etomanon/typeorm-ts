@@ -9,6 +9,10 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import Modal from "styled-react-modal";
 import { useSnackbar } from "notistack";
 
+import {
+  Checkbox,
+  CheckboxLabel
+} from "../../components/formik/styled/Checkbox";
 import { Confirm } from "../../components/confirm/Confirm";
 import { UserState } from "../../redux/user/reducers";
 import {
@@ -26,6 +30,8 @@ interface DownloadRowProps {
   onDelete: (path: string) => void;
   path: string;
   loadData: () => void;
+  selected: string[];
+  setSelected: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export const DownloadRow: React.FC<DownloadRowProps> = ({
@@ -34,7 +40,9 @@ export const DownloadRow: React.FC<DownloadRowProps> = ({
   user,
   onDelete,
   path,
-  loadData
+  loadData,
+  selected,
+  setSelected
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
@@ -55,13 +63,36 @@ export const DownloadRow: React.FC<DownloadRowProps> = ({
     e.stopPropagation();
     setOpen(true);
   };
+  const isSelected = selected.some(s => s === data.path);
   return (
     <>
-      <DownloadRowStyled key={data.path + data.name} onClick={onClick}>
+      <DownloadRowStyled
+        key={data.path + data.name}
+        onClick={onClick}
+        selected={isSelected}
+      >
         {columns.map(c => (
           <React.Fragment key={c.path}>
             {data.type === "directory" && c.path === "size" ? null : (
               <DownloadCell width={c.width}>
+                {c.path === "name" && data.type === "file" && (
+                  <div onClick={e => e.stopPropagation()}>
+                    <Checkbox
+                      checked={isSelected}
+                      name={data.path + data.name}
+                    />
+                    <CheckboxLabel
+                      onClick={() =>
+                        isSelected
+                          ? setSelected(prev =>
+                              prev.filter(p => p !== data.path)
+                            )
+                          : setSelected(prev => [...prev, data.path])
+                      }
+                      htmlFor={data.path + data.name}
+                    ></CheckboxLabel>
+                  </div>
+                )}
                 <DownloadIcon visible mr={1}>
                   {c.path === "name" ? (
                     data.type === "directory" ? (
@@ -76,21 +107,26 @@ export const DownloadRow: React.FC<DownloadRowProps> = ({
             )}
           </React.Fragment>
         ))}
-        {user.user && user.user.role === "admin" && (
-          <DownloadCell ml={["0", "auto"]}>
-            <DownloadIcon
-              onClick={e => {
-                e.stopPropagation();
-                setOpenDelete(true);
-              }}
-              color="error"
-              mr={["auto", 3]}
-            >
-              <Delete size="2.8rem" />
-            </DownloadIcon>
-            <DownloadIcon onClick={handleEdit} mr={3}>
-              <Edit size="2.8rem" />
-            </DownloadIcon>
+
+        <DownloadCell ml={["0", "auto"]}>
+          {user.user && user.user.role === "admin" && (
+            <>
+              <DownloadIcon
+                onClick={e => {
+                  e.stopPropagation();
+                  setOpenDelete(true);
+                }}
+                color="error"
+                mr={["auto", 3]}
+              >
+                <Delete size="2.8rem" />
+              </DownloadIcon>
+              <DownloadIcon onClick={handleEdit} mr={3}>
+                <Edit size="2.8rem" />
+              </DownloadIcon>
+            </>
+          )}
+          {data.type !== "directory" && (
             <DownloadIcon onClick={e => e.stopPropagation()}>
               <CopyToClipboard
                 text={`${window.location.origin}/file/${data.path}`}
@@ -103,8 +139,8 @@ export const DownloadRow: React.FC<DownloadRowProps> = ({
                 <Link size="2.8rem" />
               </CopyToClipboard>
             </DownloadIcon>
-          </DownloadCell>
-        )}
+          )}
+        </DownloadCell>
       </DownloadRowStyled>
       <Modal
         isOpen={open}

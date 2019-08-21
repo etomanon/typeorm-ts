@@ -43,6 +43,7 @@ const HeaderView: React.FC<RouteComponentProps> = ({ history }) => {
           alignItems="center"
           mb={3}
           onClick={() => history.push("/")}
+          style={{ cursor: "pointer" }}
         >
           <Logo src={logo} />
           <Text ml={2} mr={3} fontSize={4} mb={0}>

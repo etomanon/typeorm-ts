@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   width,
   WidthProps,
@@ -12,6 +12,7 @@ export const DownloadWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-bottom: 3rem;
 `;
 
 export const DownloadHeader = styled.div`
@@ -32,31 +33,45 @@ export const DownloadHeaderCell = styled.div<WidthProps & SpaceProps>`
   ${space};
 `;
 
-export const DownloadRow = styled.div`
+interface DownloadRowProps {
+  selected?: boolean;
+}
+
+const cssSelected = css`
+  border-left: 1rem solid ${({ theme }) => theme.colors.primary};
+  border-right: 1px solid ${({ theme }) => theme.colors.primary};
+`;
+
+export const DownloadRow = styled.div<DownloadRowProps>`
   display: flex;
   flex-direction: column;
   width: 100%;
   padding: 1rem;
+  border-right: 2px solid transparent;
   border-bottom: 1px solid ${({ theme }) => theme.colors.primary};
+  border-left: 2px solid transparent;
   cursor: pointer;
   transition: all 0.2s ease-in;
   &:hover {
     background: ${({ theme }) => theme.colors.primary};
     color: #fff;
   }
-  @media (min-width: ${({ theme }) => theme.breakpoints[0]}) {
+  @media (min-width: ${({ theme }) => theme.breakpoints[1]}) {
     flex-direction: row;
   }
+  ${props => props.selected && cssSelected}
 `;
 
 interface DownloadIconProps {
   visible?: true;
 }
 
-export const DownloadIcon = styled.div<DownloadIconProps & ColorProps & SpaceProps>`
+export const DownloadIcon = styled.div<
+  DownloadIconProps & ColorProps & SpaceProps
+>`
   color: ${({ theme }) => theme.colors.primary};
   ${color};
-  opacity: ${props => props.visible ? 1 : 0};
+  opacity: ${props => (props.visible ? 1 : 0)};
   transition: all 0.2s ease-in;
   ${/*sc-selector*/ DownloadRow}:hover & {
     color: #fff ${color};

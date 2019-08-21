@@ -9,8 +9,8 @@ export const columns = [
   {
     path: "name",
     name: "Název",
-    width: ["100%", "100%", "40rem"],
-    widthHeader: ["auto", "auto", "40rem"]
+    width: ["100%", "100%", "50rem"],
+    widthHeader: ["auto", "auto", "50rem"]
   },
   {
     path: "size",

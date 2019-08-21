@@ -11,6 +11,10 @@ import { Loader } from "../../components/loader/styled/Loader";
 import { Input } from "../../components/formik/styled/Input";
 
 import {
+  Checkbox,
+  CheckboxLabel
+} from "../../components/formik/styled/Checkbox";
+import {
   DownloadWrapper,
   DownloadHeader,
   DownloadHeaderCell,
@@ -27,6 +31,7 @@ let controller = new AbortController();
 export const Download: React.FC<RouteComponentProps> = () => {
   const { enqueueSnackbar } = useSnackbar();
   const user = useSelector(selectorUser);
+  const [selected, setSelected] = useState<string[]>([]);
   // search file
   const [search, setSearch] = useState("");
   // current directory path
@@ -36,6 +41,7 @@ export const Download: React.FC<RouteComponentProps> = () => {
   const [loading, setLoading] = useState(false);
 
   const loadData = useCallback(() => {
+    setSelected([]);
     setData([]);
     setLoading(true);
     ky.post("file", { json: { path } })
@@ -106,15 +112,36 @@ export const Download: React.FC<RouteComponentProps> = () => {
     onSearch(e.target.value);
   };
 
+  const isSelectedAll =
+    selected.length === data.filter(d => d.type === "file").length &&
+    selected.length !== 0;
+
   return (
     <>
       {loading && <Loader />}
-      {user.user && user.user.role === "admin" && (
-        <DownloadAdmin loadData={loadData} path={path} />
+      {user.user && (
+        <DownloadAdmin
+          loadData={loadData}
+          path={path}
+          selected={selected}
+          setSelected={setSelected}
+          user={user.user}
+        />
       )}
       <DownloadPath path={path} setPath={setPath} onSelectPath={onSelectPath} />
       <DownloadWrapper>
         <DownloadHeader>
+          <Checkbox checked={isSelectedAll} name="select-all" />
+          <CheckboxLabel
+            onClick={() =>
+              isSelectedAll
+                ? setSelected([])
+                : setSelected(
+                    data.filter(d => d.type === "file").map(d => d.path)
+                  )
+            }
+            htmlFor="select-all"
+          ></CheckboxLabel>
           {columns.map(c => (
             <DownloadHeaderCell key={c.path} width={c.widthHeader}>
               {c.name}
@@ -160,6 +187,8 @@ export const Download: React.FC<RouteComponentProps> = () => {
             onDelete={onDelete}
             path={path}
             loadData={loadData}
+            selected={selected}
+            setSelected={setSelected}
           />
         ))}
       </DownloadWrapper>

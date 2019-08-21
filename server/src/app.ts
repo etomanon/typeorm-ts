@@ -20,9 +20,10 @@ import "./passport/passport";
 createConnection().then(async connection => {
   // create and setup express app
   const app = express();
-  app.use(bodyParser.json());
   // gzip
   app.use(compression());
+  // parse json
+  app.use(bodyParser.json());
   // proper headers
   app.use(helmet());
   // no cache
