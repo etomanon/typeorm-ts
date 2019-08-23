@@ -66,6 +66,7 @@ interface DownloadIconProps {
   visible?: true;
 }
 
+// eslint-disable-next-line
 export const DownloadIcon = styled.div<
   DownloadIconProps & ColorProps & SpaceProps
 >`

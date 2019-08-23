@@ -11,6 +11,8 @@ export const NavLink = styled(ReactNavLink).attrs({
     font-weight: 500;
   }
   &:hover {
+    color: #fff;
+    background: ${({ theme }) => theme.colors.primary};
     text-decoration: underline;
   }
   ${space};

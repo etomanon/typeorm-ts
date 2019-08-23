@@ -87,6 +87,7 @@ const HeaderView: React.FC<RouteComponentProps> = ({ history }) => {
                 </NavLink>
               )}
               <Link
+                noUnderline
                 mt={[4, 0]}
                 onClick={() => {
                   dispatch(userLogout());
@@ -98,7 +99,11 @@ const HeaderView: React.FC<RouteComponentProps> = ({ history }) => {
               </Link>
             </>
           ) : (
-            <Link onClick={() => setActive(false)} href="/api/auth/twitch">
+            <Link
+              noUnderline
+              onClick={() => setActive(false)}
+              href="/api/auth/twitch"
+            >
               Přihlásit se
             </Link>
           )}

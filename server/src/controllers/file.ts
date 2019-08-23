@@ -8,7 +8,7 @@ import find from "find";
 
 import { readDirectory, pathGlobal, formatBytes } from "../utils/file";
 
-// get all files & folders for requested path (nto recursively)
+// get all files & folders for requested path (not recursively)
 export const filePost = async (req: Request, res: Response) => {
   const pathSearch = join(pathGlobal, "/", req.body.path);
   readDirectory(pathSearch).then(data =>
