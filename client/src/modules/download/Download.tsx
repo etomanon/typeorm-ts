@@ -9,6 +9,7 @@ import ky from "../../ky/ky";
 import { selectorUser } from "../../redux/user/selectors";
 import { Loader } from "../../components/loader/styled/Loader";
 import { Input } from "../../components/formik/styled/Input";
+import { Text } from "../../components/text/Text";
 
 import {
   Checkbox,
@@ -131,20 +132,24 @@ export const Download: React.FC<RouteComponentProps> = () => {
       <DownloadPath path={path} setPath={setPath} onSelectPath={onSelectPath} />
       <DownloadWrapper>
         <DownloadHeader>
-          <Checkbox checked={isSelectedAll} name="select-all" />
-          <CheckboxLabel
-            onClick={() =>
-              isSelectedAll
-                ? setSelected([])
-                : setSelected(
-                    data.filter(d => d.type === "file").map(d => d.path)
-                  )
-            }
-            htmlFor="select-all"
-          ></CheckboxLabel>
           {columns.map(c => (
             <DownloadHeaderCell key={c.path} width={c.widthHeader}>
-              {c.name}
+              {c.path === "name" && (
+                <>
+                  <Checkbox checked={isSelectedAll} name="select-all" />
+                  <CheckboxLabel
+                    onClick={() =>
+                      isSelectedAll
+                        ? setSelected([])
+                        : setSelected(
+                            data.filter(d => d.type === "file").map(d => d.path)
+                          )
+                    }
+                    htmlFor="select-all"
+                  ></CheckboxLabel>
+                </>
+              )}
+              <Text ml={c.path === "name" ? 2 : 0}>{c.name}</Text>
             </DownloadHeaderCell>
           ))}
           <DownloadHeaderCell ml={[0, "auto"]} width={[1, "auto"]}>

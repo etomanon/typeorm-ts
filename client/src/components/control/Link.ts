@@ -12,6 +12,7 @@ interface LinkProps {
   noUnderline?: boolean;
 }
 
+// eslint-disable-next-line
 export const Link = styled.a<
   LinkProps & FontWeightProps & SpaceProps & ColorProps
 >`
