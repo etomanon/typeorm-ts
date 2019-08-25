@@ -37,10 +37,12 @@ export const DownloadFile: React.FC<DownloadFileProps> = ({
     });
 
     req.upload.addEventListener("load", () => {
-      enqueueSnackbar("Nahráno", { variant: "success" });
-      setLoading(false);
-      loadData();
-      setOpen(false);
+      setTimeout(() => {
+        enqueueSnackbar("Nahráno", { variant: "success" });
+        setLoading(false);
+        loadData();
+        setOpen(false);
+      }, 50);
     });
 
     req.upload.addEventListener("error", () => {
