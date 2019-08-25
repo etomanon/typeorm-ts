@@ -74,7 +74,7 @@ export const DownloadAdmin: React.FC<DownloadAdminProps> = ({
       {loading && <Loader />}
       <Flex
         mx={[2, 2, 0]}
-        mt={1}
+        mt={2}
         mb={3}
         flexDirection={["column", "column", "row"]}
         alignItems="center"

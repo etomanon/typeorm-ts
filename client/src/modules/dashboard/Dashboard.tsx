@@ -29,7 +29,7 @@ export const Dashboard: React.FC<RouteComponentProps> = () => {
     <>
       {user.user && (
         <Flex flexDirection="column" alignItems="center">
-          <Text textAlign="center" mb={2}>
+          <Text textAlign="center" mb={2} mt={1}>
             Vítejte {user.user.name}
           </Text>
           <Text

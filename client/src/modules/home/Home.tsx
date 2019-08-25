@@ -7,7 +7,7 @@ import { Text } from "../../components/text/Text";
 export const Home: React.FC<RouteComponentProps> = () => {
   return (
     <>
-      <Text display="block" textAlign="center">
+      <Text display="block" textAlign="center" mt={2}>
         Stránka pro sdílení souborů s předplatiteli{" "}
         <Link
           fontWeight={500}

@@ -1,6 +1,7 @@
 import styled, { keyframes } from "styled-components";
+import { width, WidthProps, space, SpaceProps } from "styled-system";
 
-const rotate = keyframes`
+const move = keyframes`
   from {
     transform: translate3D(-100%, 0, 0);
   }
@@ -15,7 +16,15 @@ export const Loader = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 6px;
+  height: 0.6rem;
   background: ${({ theme }) => theme.colors.primary};
-  animation: ${rotate} 1s ease-in infinite;
+  animation: ${move} 1s ease-in infinite;
+`;
+
+export const LoaderUpload = styled.div<WidthProps & SpaceProps>`
+  height: 0.6rem;
+  background: ${({ theme }) => theme.colors.primary};
+  transition: all 0.2s ease-in;
+  ${width};
+  ${space};
 `;

@@ -10,10 +10,12 @@ export const NavLink = styled(ReactNavLink).attrs({
   &.${p => p.activeClassName} {
     font-weight: 500;
   }
-  &:hover {
+  &:hover,
+  &:focus {
     color: #fff;
     background: ${({ theme }) => theme.colors.primary};
-    text-decoration: underline;
+    text-decoration: none;
+    outline: none;
   }
   ${space};
 `;

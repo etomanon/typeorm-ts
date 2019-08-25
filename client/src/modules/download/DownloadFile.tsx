@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { Flex } from "@rebass/grid";
 import { useSnackbar } from "notistack";
 
-import ky from "../../ky/ky";
-
-import { Loader } from "../../components/loader/styled/Loader";
+import { LoaderUpload } from "../../components/loader/styled/Loader";
 import { Input } from "../../components/formik/styled/Input";
 import { Text } from "../../components/text/Text";
 import { Button } from "../../components/button/styled/Button";
@@ -21,6 +19,7 @@ export const DownloadFile: React.FC<DownloadFileProps> = ({
   setOpen
 }) => {
   const { enqueueSnackbar } = useSnackbar();
+  const [percentage, setPercentage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,20 +28,29 @@ export const DownloadFile: React.FC<DownloadFileProps> = ({
     setLoading(true);
     const formData = new FormData();
     files.forEach((f, i) => formData.append(`files${i}`, f));
-    ky.post(`file/upload?path=${encodeURIComponent(path)}`, {
-      body: formData
-    })
-      .then(() => {
-        enqueueSnackbar("Nahráno", { variant: "success" });
-        setLoading(false);
-        loadData();
-        setOpen(false);
-      })
-      .catch(() => {
-        enqueueSnackbar("Někde se stala chyba :(", { variant: "error" });
-        setLoading(false);
-        setOpen(false);
-      });
+    const req = new XMLHttpRequest();
+
+    req.upload.addEventListener("progress", event => {
+      if (event.lengthComputable) {
+        setPercentage((event.loaded / event.total) * 100);
+      }
+    });
+
+    req.upload.addEventListener("load", () => {
+      enqueueSnackbar("Nahráno", { variant: "success" });
+      setLoading(false);
+      loadData();
+      setOpen(false);
+    });
+
+    req.upload.addEventListener("error", () => {
+      enqueueSnackbar("Někde se stala chyba :(", { variant: "error" });
+      setLoading(false);
+      setOpen(false);
+    });
+
+    req.open("POST", `api/file/upload?path=${encodeURIComponent(path)}`);
+    req.send(formData);
   };
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { currentTarget } = e;
@@ -53,7 +61,6 @@ export const DownloadFile: React.FC<DownloadFileProps> = ({
   };
   return (
     <>
-      {loading && <Loader />}
       <Flex
         px={2}
         width={["95%", "35rem"]}
@@ -85,8 +92,9 @@ export const DownloadFile: React.FC<DownloadFileProps> = ({
           <Text mt={2} mb={2} fontSize={1} textAlign="center" width={1}>
             Limit 20 GB na 1 soubor
           </Text>
-          <Button width={1} mt={2} mb={2} variant="filled">
-            Nahrát
+          {loading && <LoaderUpload width={`${percentage}%`} mb={1} mt={1} />}
+          <Button width={1} mt={2} mb={2} variant="filled" disabled={loading}>
+            {loading ? "Nahravám..." : "Nahrát"}
           </Button>
         </form>
       </Flex>

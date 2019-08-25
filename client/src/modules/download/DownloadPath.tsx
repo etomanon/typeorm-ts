@@ -31,17 +31,18 @@ export const DownloadPath: React.FC<DownloadPathProps> = ({
       >
         Home
       </Text>
-      {path.split("/").map((p, i, arr) => (
-        <Text
-          pointer
-          mr={1}
-          key={p}
-          onClick={() => onSelectPath(i)}
-          fontWeight={i + 1 === arr.length ? 500 : 400}
-        >
-          / {p}
-        </Text>
-      ))}
+      {path !== "" &&
+        path.split("/").map((p, i, arr) => (
+          <Text
+            pointer
+            mr={1}
+            key={p}
+            onClick={() => onSelectPath(i)}
+            fontWeight={i + 1 === arr.length ? 500 : 400}
+          >
+            / {p}
+          </Text>
+        ))}
     </Flex>
   );
 };

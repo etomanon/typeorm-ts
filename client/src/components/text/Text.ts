@@ -24,9 +24,9 @@ interface TextProps {
 
 const cssPointer = css`
   cursor: pointer;
-  transition: color 0.2s ease-in;
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+    color: #fff;
+    background: ${({ theme }) => theme.colors.primary};
   }
 `;
 
