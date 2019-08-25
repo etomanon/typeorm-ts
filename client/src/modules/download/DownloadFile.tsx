@@ -42,7 +42,7 @@ export const DownloadFile: React.FC<DownloadFileProps> = ({
         setLoading(false);
         loadData();
         setOpen(false);
-      }, 50);
+      }, 200);
     });
 
     req.upload.addEventListener("error", () => {
